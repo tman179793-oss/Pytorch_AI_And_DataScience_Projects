@@ -3,6 +3,7 @@ from PIL import Image
 from io import BytesIO
 import matplotlib.pyplot as plt
 import math
+from geopy.geocoders import Nominatim
 
 records = []
 with open("data/shard_0.msg", "rb") as f:
@@ -34,3 +35,13 @@ for i in range(n, len(axes)):
 
 plt.tight_layout()
 plt.show()
+
+for label, item in records[3].items():
+    if label == "latitude":
+        latitude = item
+    if label == "longitude":
+        longitude = item
+geolocator = Nominatim(user_agent="my_app")
+location = geolocator.reverse(f"{latitude}, {longitude}")
+
+print(location.address)
